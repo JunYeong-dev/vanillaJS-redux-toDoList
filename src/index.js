@@ -20,7 +20,7 @@ const reducer = (state = [], action) => {
             */ 
             return [...state, {text: action.text}]
         case DELETE_TODO:
-            return []
+            return [];
         default:
             return state;
     }
@@ -30,12 +30,16 @@ const store = createStore(reducer);
 
 store.subscribe(() => console.log(store.getState()));
 
+const addToDo = (text) => {
+    // dispatch를 통해 데이터를 배열 형식으로 보낼 수 있음
+    store.dispatch({type: ADD_TODO, text});
+}
+
 const onSubmit = e => {
     e.preventDefault();
     const toDo = input.value;
     input.value = "";
-    // dispatch를 통해 데이터를 배열 형식으로 보낼 수 있음
-    store.dispatch({type: ADD_TODO, text: toDo});
+    addToDo();
 }
 
 form.addEventListener("submit", onSubmit);
