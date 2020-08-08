@@ -36,8 +36,12 @@ const paintToDos = () => {
     ul.innerHTML = '';
     toDos.forEach(toDo => {
         const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.innerText = "DEL";
+        btn.addEventListener("click", deleteToDo);
         li.id = toDo.id;
         li.innerText = toDo.text;
+        li.appendChild(btn);
         ul.appendChild(li);
     });
 }
@@ -47,6 +51,10 @@ store.subscribe(paintToDos);
 const addToDo = (text) => {
     // dispatch를 통해 데이터를 배열 형식으로 보낼 수 있음
     store.dispatch({type: ADD_TODO, text});
+}
+
+const deleteToDo = () => {
+    console.log("delete");
 }
 
 const onSubmit = e => {
