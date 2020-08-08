@@ -17,8 +17,9 @@ const reducer = (state = [], action) => {
             ...state : 간단히 말하면 배열을 풀어주는 것
             [...state, {text: action.text}] : 기존 array인 state의 contents(내용) + 새로운 object -> 새로운 array 생성
             기존의 state를 변경하지 않고, spread 연산자(...)를 사용하여 업데이트(새로 만듦)
+            [{text: action.text, id: Date.now()}, ...state] 이것도 가능
             */ 
-            return [...state, {text: action.text}]
+            return [...state, {text: action.text, id: Date.now()}]
         case DELETE_TODO:
             return [];
         default:
@@ -30,6 +31,19 @@ const store = createStore(reducer);
 
 store.subscribe(() => console.log(store.getState()));
 
+const paintToDos = () => {
+    const toDos = store.getState();
+    ul.innerHTML = '';
+    toDos.forEach(toDo => {
+        const li = document.createElement("li");
+        li.id = toDo.id;
+        li.innerText = toDo.text;
+        ul.appendChild(li);
+    });
+}
+
+store.subscribe(paintToDos);
+
 const addToDo = (text) => {
     // dispatch를 통해 데이터를 배열 형식으로 보낼 수 있음
     store.dispatch({type: ADD_TODO, text});
@@ -39,7 +53,7 @@ const onSubmit = e => {
     e.preventDefault();
     const toDo = input.value;
     input.value = "";
-    addToDo();
+    addToDo(toDo);
 }
 
 form.addEventListener("submit", onSubmit);
