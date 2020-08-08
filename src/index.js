@@ -7,6 +7,20 @@ const ul = document.querySelector("ul");
 const ADD_TODO = "ADD_TODO";
 const DELETE_TODO = "DELETE_TODO";
 
+const addToDo = text => {
+    return {
+        type: ADD_TODO,
+        text
+    }
+}
+
+const deleteToDo = id => {
+    return {
+        type: DELETE_TODO,
+        id
+    }
+}
+
 const reducer = (state = [], action) => {
     console.log(action);
     switch(action.type){
@@ -38,7 +52,7 @@ const paintToDos = () => {
         const li = document.createElement("li");
         const btn = document.createElement("button");
         btn.innerText = "DEL";
-        btn.addEventListener("click", deleteToDo);
+        btn.addEventListener("click", dispatchDeleteToDo);
         li.id = toDo.id;
         li.innerText = toDo.text;
         li.appendChild(btn);
@@ -48,20 +62,21 @@ const paintToDos = () => {
 
 store.subscribe(paintToDos);
 
-const addToDo = (text) => {
+const dispatchAddToDo = (text) => {
     // dispatch를 통해 데이터를 배열 형식으로 보낼 수 있음
-    store.dispatch({type: ADD_TODO, text});
+    store.dispatch(addToDo(text));
 }
 
-const deleteToDo = () => {
-    console.log("delete");
+const dispatchDeleteToDo = e => {
+    const id = e.target.parentNode.id;
+    store.dispatch(deleteToDo(id));
 }
 
 const onSubmit = e => {
     e.preventDefault();
     const toDo = input.value;
     input.value = "";
-    addToDo(toDo);
+    dispatchAddToDo(toDo);
 }
 
 form.addEventListener("submit", onSubmit);
