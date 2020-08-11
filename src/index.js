@@ -33,10 +33,12 @@ const reducer = (state = [], action) => {
             기존의 state를 변경하지 않고, spread 연산자(...)를 사용하여 업데이트(새로 만듦)
             [{text: action.text, id: Date.now()}, ...state] 이것도 가능
             */ 
-            return [...state, {text: action.text, id: Date.now()}]
+            const newToDoObj = {text: action.text, id: Date.now()};
+            return [...state, newToDoObj]
         case DELETE_TODO:
             // state를 변경하지 않고 filter를 사용하여 새로운 array 생성
-            return state.filter(toDo => toDo.id !== action.id);
+            const cleaned = state.filter(toDo => toDo.id !== action.id)
+            return cleaned;
         default:
             return state;
     }
